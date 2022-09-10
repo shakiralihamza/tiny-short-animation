@@ -13,6 +13,7 @@ const Circle = () => {
     const [hovered, setHovered] = React.useState(0);
     const [showingAnimalDetails, setShowingAnimalDetails] = React.useState(false);
     const [animalToShow, setAnimalToShow] = React.useState(null);
+    const [img, setImg] = React.useState(null);
 
     //below is some reusable content
 
@@ -41,6 +42,7 @@ const Circle = () => {
     const handleMouseOver = (i) => {
         if (!showingAnimalDetails) {
             setHovered(i + 1);
+            setImg(i);
             setAnimalToShow(animals[i]);
             animateAnimalContentIn();
         }
@@ -77,7 +79,7 @@ const Circle = () => {
             }
         });
         closeButton.animate({
-            keyframes: [{opacity: 0},{opacity: 1}],
+            keyframes: [{opacity: 0}, {opacity: 1}],
             animationOptions: {
                 duration: 1000, delay: 700, easing: "cubic-bezier(0.275, 0.82, 0.165, 1)", fill: "forwards"
             }
@@ -96,7 +98,7 @@ const Circle = () => {
             }
         });
         closeButton.animate({
-            keyframes: [{opacity: 1},{opacity: 0}],
+            keyframes: [{opacity: 1}, {opacity: 0}],
             animationOptions: {
                 duration: 500, delay: 200, easing: "cubic-bezier(0.275, 0.82, 0.165, 1)", fill: "forwards"
             }
@@ -229,9 +231,22 @@ const Circle = () => {
                 <>
                     <Grid item xs={'auto'} ref={animalContent.ref}
                           sx={{position: 'absolute', textAlign: 'center', mt: -5}}>
-                        <Box ref={animalImage.ref}>
-                            <img src={animalToShow.image} alt={animalToShow.name}
-                                 style={{height: '200px'}}/>
+
+                        <Box ref={animalImage.ref} sx={{height:'200px'}}>
+                            {
+                                animals.map((animal, index) => (
+                                    <img src={animal.image} alt={animal.name}
+                                         style={{
+                                             top: '30%',
+                                             left: '50%',
+                                             transform: 'translate(-50%, -50%)',
+                                             height: '200px',
+                                             visibility: img === index ? 'visible' : 'hidden',
+                                             position: 'absolute',
+                                         }}/>
+                                ))
+                            }
+
                         </Box>
                         <Box ref={pieceNumber.ref}>
                             <Typography className={'piece-number'}>
