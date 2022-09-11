@@ -3,4 +3,9 @@ body {
     background: radial-gradient(circle, rgba(74, 71, 70, 1), rgb(27, 27, 28) 50%);
     color: white;
     overflow: hidden;
+    /*-webkit-touch-callout: none; !* iOS Safari *!*/
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
