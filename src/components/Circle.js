@@ -3,7 +3,7 @@
 
 import React from 'react';
 import './Circle.css';
-import useWebAnimations, {fadeIn} from "@wellyshen/use-web-animations";
+import useWebAnimations, {fadeIn, fadeOut} from "@wellyshen/use-web-animations";
 import {Box, Grid, Typography} from "@mui/material";
 import animals from "./animals";
 
@@ -14,6 +14,7 @@ const Circle = () => {
     const [showingAnimalDetails, setShowingAnimalDetails] = React.useState(false);
     const [animalToShow, setAnimalToShow] = React.useState(null);
     const [img, setImg] = React.useState(null);
+    const changeAnimalDuration = 200;
 
     //below is some reusable content
 
@@ -24,9 +25,16 @@ const Circle = () => {
         return [{transform: `rotate(${i * angle}deg) translate(${translateLength}px)`}, {transform: `rotate(${i * angle + 360}deg) translate(${translateLength}px)`},];
     }
     const animalContentAnimationOptionsIn = {
-        ...fadeIn, animationOptions: {
-            duration: 500, easing: "ease-in-out", fill: "forwards"
-
+        keyframes: [{marginTop: "10px", opacity: 0}, {marginTop: "0px", opacity: 1}],
+        animationOptions: {
+            duration: changeAnimalDuration + 400,
+            easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+            fill: "forwards"
+        }
+    }
+    const animalContentAnimationOptionsOut = {
+        ...fadeOut, animationOptions: {
+            duration: changeAnimalDuration, easing: "ease-in-out", fill: "forwards"
         }
     }
     const animationOptions = {
@@ -41,10 +49,14 @@ const Circle = () => {
 
     const handleMouseOver = (i) => {
         if (!showingAnimalDetails) {
-            setHovered(i + 1);
-            setImg(i);
-            setAnimalToShow(animals[i]);
-            animateAnimalContentIn();
+            animateAnimalContentOut();
+            setTimeout(() => {
+                setHovered(i + 1);
+                setImg(i);
+                setAnimalToShow(animals[i]);
+                animateAnimalContentIn();
+            }, changeAnimalDuration);
+
         }
     }
     const handleElementClick = (index) => {
@@ -130,12 +142,23 @@ const Circle = () => {
         }
     }
     const animateAnimalContentIn = () => {
-        animalType.animate({...animalContentAnimationOptionsIn});
         animalImage.animate({...animalContentAnimationOptionsIn});
         animalName.animate({...animalContentAnimationOptionsIn});
+        pieceNumber.animate({...animalContentAnimationOptionsIn});
+        animalType.animate({
+            keyframes: [{marginTop: "20px", opacity: 0}, {marginTop: "10px", opacity: 1}],
+            animationOptions: {...animalContentAnimationOptionsIn.animationOptions, delay: 200}
+        });
+
+        animalNameScratchy.animate({...scratchyOptions});
+    }
+    const animateAnimalContentOut = () => {
+        animalType.animate({...animalContentAnimationOptionsOut});
+        animalImage.animate({...animalContentAnimationOptionsOut});
+        animalName.animate({...animalContentAnimationOptionsOut});
         pieceNumber.animate({
-            keyframes: [{marginTop: "20px", opacity: 0}, {marginTop: "0px", opacity: 1},],
-            animationOptions: {duration: 500, delay: 0, fill: "forwards", easing: "ease-in-out"}
+            keyframes: [{marginTop: "0px"}, {marginTop: "20px", opacity: 0}],
+            animationOptions: animalContentAnimationOptionsOut.animationOptions
         });
         animalNameScratchy.animate({...scratchyOptions});
     }
@@ -232,7 +255,7 @@ const Circle = () => {
                     <Grid item xs={'auto'} ref={animalContent.ref}
                           sx={{position: 'absolute', textAlign: 'center', mt: -5}}>
 
-                        <Box ref={animalImage.ref} sx={{height:'200px'}}>
+                        <Box ref={animalImage.ref} sx={{height: '200px'}}>
                             {
                                 animals.map((animal, index) => (
                                     <img src={animal.image} alt={animal.name}
@@ -258,8 +281,9 @@ const Circle = () => {
                                 {animalToShow.name}
                             </Typography>
                         </Box>
-                        <Box sx={{marginTop: '10px'}} ref={animalType.ref}>
-                            <Typography className={'animal-type'} variant={'body1'}>
+                        <Box sx={{marginTop: '10px', position: 'absolute', width: '100%'}} ref={animalType.ref}>
+                            <Typography className={'animal-type'} variant={'body1'} textAlign={'center'}
+                                        sx={{width: '100%'}}>
                                 {animalToShow.type}
                             </Typography>
                         </Box>
