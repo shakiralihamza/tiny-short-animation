@@ -12,6 +12,7 @@ const Circle = () => {
     const [selected, setSelected] = React.useState(0);
     const [hovered, setHovered] = React.useState(0);
     const [showingAnimalDetails, setShowingAnimalDetails] = React.useState(false);
+    const [showingAnimal, setShowingAnimal] = React.useState(false);
     const [animalToShow, setAnimalToShow] = React.useState(null);
     const [img, setImg] = React.useState(null);
     const changeAnimalDuration = 200;
@@ -50,8 +51,9 @@ const Circle = () => {
     const handleMouseOver = (i) => {
         if (!showingAnimalDetails) {
             animateAnimalContentOut();
+            setHovered(i + 1);
             setTimeout(() => {
-                setHovered(i + 1);
+                setShowingAnimal(true)
                 setImg(i);
                 setAnimalToShow(animals[i]);
                 animateAnimalContentIn();
@@ -225,7 +227,7 @@ const Circle = () => {
                     </div>)
                 })}
             </Grid>
-            {hovered === 0 && selected === 0 ? (
+            {!showingAnimal && selected === 0 ? (
                 <Grid item xs={'auto'} sx={{position: 'absolute', textAlign: 'center'}}>
                     <Box ref={origamiHeadingBox.ref} sx={{marginTop: '20px'}}>
                         <Typography className={'origami-heading'}>
