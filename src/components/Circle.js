@@ -23,7 +23,7 @@ const Circle = () => {
     const translateLength = 230;
     const angle = 360 / numberOfElements;
     const keyframes = (i) => {
-        return [{transform: `rotate(${i * angle}deg) translate(${translateLength}px)`}, {transform: `rotate(${i * angle + 360}deg) translate(${translateLength}px)`},];
+        return [{transform: `rotate(${i * angle}deg) translate(${translateLength}px)`}, {transform: `rotate(${i * angle + 360}deg) translate(${translateLength}px)`}];
     }
     const animalContentAnimationOptionsIn = {
         keyframes: [{marginTop: "10px", opacity: 0}, {marginTop: "0px", opacity: 1}],
@@ -42,7 +42,7 @@ const Circle = () => {
         delay: 0, duration: 80000, iterations: 1000,
     }
     const scratchyOptions = {
-        keyframes: [{backgroundPosition: '0 0'}, {backgroundPosition: '0 0'}, {backgroundPosition: '20px -20px'}, {backgroundPosition: '20px -20px'}, {backgroundPosition: '40px -40px'}, {backgroundPosition: '40px -40px'}, {backgroundPosition: '60px -60px'}, {backgroundPosition: '60px -60px'}, {backgroundPosition: '0 0'},],
+        keyframes: [{backgroundPosition: '0 0'}, {backgroundPosition: '0 0'}, {backgroundPosition: '20px -20px'}, {backgroundPosition: '20px -20px'}, {backgroundPosition: '40px -40px'}, {backgroundPosition: '40px -40px'}, {backgroundPosition: '60px -60px'}, {backgroundPosition: '60px -60px'}, {backgroundPosition: '0 0'}],
         animationOptions: {duration: 250, iterations: 10000, easing: "steps(8, end)"}
     }
 
@@ -58,7 +58,6 @@ const Circle = () => {
                 setAnimalToShow(animals[i]);
                 animateAnimalContentIn();
             }, changeAnimalDuration);
-
         }
     }
     const handleElementClick = (index) => {
@@ -121,9 +120,11 @@ const Circle = () => {
     const hideElements = () => {
         for (let i = 0; i < numberOfElements; i++) {
             eval(`element${i + 1}.animate({
-                keyframes: [{opacity: 1}, {
-                    transform: \`rotate(${i * angle}deg) translateX(${translateLength}px)\`, opacity: 0.2
-                }, {transform: \`rotate(${i * angle}deg) translateX(${translateLength + 600}px)\`, opacity: 0}],
+                keyframes: [
+                    {opacity: 1},
+                    {transform: \`rotate(${i * angle}deg) translateX(${translateLength}px)\`, opacity: 0.2},
+                    {transform: \`rotate(${i * angle}deg) translateX(${translateLength + 600}px)\`, opacity: 0}
+                ],
                 animationOptions: {duration: 1000, easing: "ease-in", fill: "forwards"}
             })`);
         }
